@@ -72,6 +72,7 @@ true)
 	cygwin*)
 		shrpldflags="$shrpldflags -Wl,--out-implib=libperl.dll.a -Wl,--image-base,0x52000000"
 		linklibperl="-L. -lperl"
+		libperldep='$(LIBPERL)'
 		;;
 	sunos*)
 		linklibperl="-lperl"
@@ -119,6 +120,9 @@ true)
 	    linklibperl='libperl.x'
 	    DPERL_EXTERNAL_GLOB=''
 	    ;;
+	haiku*)
+		libperldep='$(LIBPERL)'
+		;;
 	esac
 	case "$ldlibpthname" in
 	'') ;;
@@ -285,6 +289,7 @@ CCDLFLAGS = $ccdlflags
 DLSUFFIX = .$dlext
 PLDLFLAGS = $pldlflags
 LIBPERL = $libperl
+LIBPERL_DEP = $libperldep
 LLIBPERL= $linklibperl
 LLIBPERL_NONSHR= $linklibperl_nonshr
 SHRPENV = $shrpenv
@@ -1217,7 +1222,7 @@ manicheck:	FORCE
 $(DYNALOADER):	$(MINIPERL_EXE) lib/buildcustomize.pl preplibrary FORCE $(nonxs_ext)
 	$(MINIPERL) make_ext.pl $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL) LINKTYPE=static $(STATIC_LDFLAGS)
 
-d_dummy $(dynamic_ext):	$(MINIPERL_EXE) lib/buildcustomize.pl preplibrary makeppport $(DYNALOADER) FORCE $(PERLEXPORT)
+d_dummy $(dynamic_ext):	$(MINIPERL_EXE) lib/buildcustomize.pl preplibrary makeppport $(DYNALOADER) FORCE $(PERLEXPORT) $(LIBPERL_DEP)
 	$(MINIPERL) make_ext.pl $@ MAKE=$(MAKE) LIBPERL_A=$(LIBPERL) LINKTYPE=dynamic
 
 s_dummy $(static_ext):	$(MINIPERL_EXE) lib/buildcustomize.pl preplibrary makeppport $(DYNALOADER) FORCE
