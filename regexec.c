@@ -7344,11 +7344,18 @@ S_reginclass(pTHX_ regexp * const prog, const regnode * const n, const U8* const
                  * loop could be used below to iterate over both the source
                  * character, and its fold (if different) */
 
-                int count = 0;
-                int to_complement = 0;
+                U8 folded = c;
+                int trials = (flags & ANYOF_LOC_FOLD && folded != c)
+                             ? 2
+                             : 1;
+                int i;
+                for (i = 0; i < trials; i++) {
+                    int count = 0;
+                    int to_complement = 0;
+                    U8 character = (i == 0) ? c : folded;
                 while (count < ANYOF_MAX) {
                     if (ANYOF_CLASS_TEST(n, count)
-                        && to_complement ^ cBOOL(isFOO_lc(count/2, (U8) c)))
+                        && to_complement ^ cBOOL(isFOO_lc(count/2, character)))
                     {
                         match = TRUE;
                         break;
@@ -7356,6 +7363,17 @@ S_reginclass(pTHX_ regexp * const prog, const regnode * const n, const U8* const
                     count++;
                     to_complement ^= 1;
                 }
+                    if (match) break;
+                }
+
+                /* It is unlikely, but possible, that the locale is set up so
+                 * that some of the classes aren't closed under folding, i.e.,
+                 * some might match the fold of the character even if they
+                 * don't match the character.  [:upper:] and [:lower:]) are
+                 * almost certainly fall into this category, but we handle that
+                 * situation alwready via the pseudo class [:cased:].  Since
+                 * other classes might not be closed under folding, handle that
+                 * situation */
 	    }
 	}
     }

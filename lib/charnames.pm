@@ -278,8 +278,9 @@ mean C<"B">, etc.
 
 Aliases must begin with a character that is alphabetic.  After that, each may
 contain any combination of word (C<\w>) characters, SPACE (U+0020),
-HYPHEN-MINUS (U+002D), LEFT PARENTHESIS (U+0028), RIGHT PARENTHESIS (U+0029),
-and NO-BREAK SPACE (U+00A0).  These last three should never have been allowed
+HYPHEN-MINUS (U+002D), LEFT-TO-RIGHT MARK (U+200E), RIGHT-TO-LEFT MARK (U+200F),
+LEFT PARENTHESIS (U+0028), RIGHT PARENTHESIS (U+0029), and NO-BREAK SPACE
+(U+00A0).  These last three should never have been allowed
 in names, and are retained for backwards compatibility only; they may be
 deprecated and removed in future releases of Perl, so don't use them for new
 names.  (More precisely, the first character of a name you specify must be

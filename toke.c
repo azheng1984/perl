@@ -2963,7 +2963,8 @@ S_scan_const(pTHX_ char *start)
      * far, plus the length the current construct will occupy, plus room for
      * the trailing NUL, plus one byte for every input byte still unscanned */ 
 
-    UV uv;
+    UV uv = UV_MAX; /* Initialize to weird value to try to catch any uses
+                       before set */
 #ifdef EBCDIC
     UV literal_endpoint = 0;
     bool native_range = TRUE; /* turned to FALSE if the first endpoint is Unicode. */
@@ -3286,11 +3287,12 @@ S_scan_const(pTHX_ char *start)
 	    /* eg. \o{24} indicates the octal constant \024 */
 	    case 'o':
 		{
-		    STRLEN len;
 		    const char* error;
 
-		    bool valid = grok_bslash_o(s, &uv, &len, &error, 1);
-		    s += len;
+		    bool valid = grok_bslash_o(&s, &uv, &error,
+                                               TRUE, /* Output warning */
+                                               FALSE, /* Not strict */
+                                               UTF);
 		    if (! valid) {
 			yyerror(error);
 			continue;
@@ -3301,11 +3303,12 @@ S_scan_const(pTHX_ char *start)
 	    /* eg. \x24 indicates the hex constant 0x24 */
 	    case 'x':
 		{
-		    STRLEN len;
 		    const char* error;
 
-		    bool valid = grok_bslash_x(s, &uv, &len, &error, 1);
-		    s += len;
+		    bool valid = grok_bslash_x(&s, &uv, &error,
+                                               TRUE, /* Output warning */
+                                               FALSE, /* Not strict */
+                                               UTF);
 		    if (! valid) {
 			yyerror(error);
 			continue;

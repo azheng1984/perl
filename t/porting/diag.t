@@ -640,3 +640,17 @@ Operation "%s" returns its argument for non-Unicode code point 0x%X
 Operation "%s" returns its argument for UTF-16 surrogate U+%X
 Unicode surrogate U+%X is illegal in UTF-8
 UTF-16 surrogate U+%X
+Unmatched '%c' in POSIX class in regex; marked by <-- HERE in m/%s/
+Unmatched '[' in POSIX class in regex; marked by <-- HERE in m/%s/
+(?[...]) not valid in locale in regex; marked by <-- HERE in m/%s/
+The regex_sets feature is experimental
+Sequence (?[... not terminated in regex m/%s/
+Unexpected character in sequence (?[...]) in regex; marked by <-- HERE in m/%s/
+Unexpected binary operator '%c' with no preceding operand in regex; marked by <-- HERE in m/%s/
+Unexpected '(' with no preceding operator in regex; marked by <-- HERE in m/%s/
+')' with no matching '(' in regex; marked by <-- HERE in m/%s/
+Empty '(...)' in regex; marked by <-- HERE in m/%s/
+operand with no preceding operator in regex; marked by <-- HERE in m/%s/
+Property '%s' is unknown in regex; marked by <-- HERE in m/%s/
+Need exactly 3 octal digits in regex; marked by <-- HERE in m/%s/
+Unrecognized escape \%c in character class in regex; marked by <-- HERE in m/%s/
